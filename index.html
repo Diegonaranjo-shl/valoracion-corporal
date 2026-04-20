@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Valoración Corporal - Tu Mejor Versión</title>
+<meta name="description" content="Descubre tu composición corporal y recibe un plan nutricional personalizado gratis.">
+<meta name="theme-color" content="#4CB848">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g1:#4CB848;--g2:#2D8C3C;--g3:#1A5C28;--lime:#8DC63F;--gold:#F5A623;--warm:#FFF9F3;--coral:#FF6B6B;--dk:#2C3E2C;--mid:#4A6B4A;--lt:#7A9A7A;--danger:#E74C3C;--warn:#F39C12;--ok:#27AE60;--info:#3498DB}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,var(--warm) 0%,#fff 30%);min-height:100vh;color:var(--dk)}
+.app{max-width:440px;margin:0 auto;padding:16px 20px 40px}
+.top{text-align:center;padding:8px 0 16px;font-size:14px;font-weight:800;color:var(--g2);letter-spacing:2px;text-transform:uppercase}
+.bar{display:flex;gap:6px;margin-bottom:12px}
+.bar div{flex:1;height:5px;border-radius:3px;background:#e0e0e0;transition:background 0.4s}
+.bar div.on{background:linear-gradient(90deg,var(--g1),var(--lime))}
+.step{opacity:1;transform:translateX(0);transition:all 0.25s ease}
+.step.hide{opacity:0;transform:translateX(20px)}
+.icon-big{font-size:44px;margin-bottom:8px;text-align:center}
+h2{font-size:22px;font-weight:800;color:var(--g3);text-align:center}
+h3{font-size:15px;font-weight:700;color:var(--g3);margin-bottom:12px}
+.sub{font-size:14px;color:var(--mid);margin-top:8px;line-height:1.6;text-align:center}
+.sub2{font-size:13px;color:var(--mid);margin-top:8px;text-align:center}
+label.field{display:block;font-size:13px;font-weight:600;color:var(--mid);margin-bottom:6px}
+.input-wrap{position:relative;margin-bottom:16px}
+.input-wrap input{width:100%;padding:14px 16px;border:2px solid #e8e8e8;border-radius:14px;font-size:16px;font-family:'Nunito',sans-serif;color:var(--dk);background:#fff;outline:none;transition:border-color 0.3s}
+.input-wrap input:focus{border-color:var(--g1)}
+.input-wrap .suf{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--lt);font-size:14px;font-weight:600}
+.input-wrap input.has-suf{padding-right:50px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.opts{display:grid;gap:10px;margin-bottom:16px}
+.opts.c2{grid-template-columns:1fr 1fr}
+.opt{padding:14px 12px;border-radius:14px;border:2px solid #e8e8e8;background:#fff;cursor:pointer;text-align:center;transition:all 0.3s;font-family:'Nunito',sans-serif}
+.opt:hover{border-color:#ccc}
+.opt.sel{border-color:var(--g1);background:linear-gradient(135deg,rgba(76,184,72,0.08),rgba(141,198,63,0.08));box-shadow:0 2px 12px rgba(76,184,72,0.2)}
+.opt .ol{font-size:14px;font-weight:700;color:var(--dk)}
+.opt.sel .ol{color:var(--g2)}
+.opt .od{font-size:11px;color:var(--lt);margin-top:4px}
+.btns{display:flex;gap:10px;margin-top:16px}
+.btn{width:100%;padding:16px 24px;border-radius:16px;border:none;font-size:16px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn.pri{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 4px 16px rgba(45,140,60,0.25)}
+.btn.sec{background:#fff;color:var(--g2);box-shadow:inset 0 0 0 2px var(--g1)}
+.btn:disabled{background:#ccc;color:#999;box-shadow:none;cursor:not-allowed}
+.alert{border-radius:12px;padding:16px 18px;margin-bottom:16px;border-left:4px solid}
+.alert .at{font-size:14px;font-weight:700;color:var(--dk);margin-bottom:6px}
+.alert .ab{font-size:13px;color:var(--mid);line-height:1.6}
+.alert.suc{background:#E8F8E8;border-color:var(--ok)}
+.alert.wrn{background:#FFF8E1;border-color:var(--warn)}
+.alert.dng{background:#FFEBEE;border-color:var(--danger)}
+.alert.inf{background:#E3F2FD;border-color:var(--info)}
+.card{background:#fff;border-radius:18px;padding:18px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.06);text-align:center}
+.card .ct{font-size:11px;font-weight:600;color:var(--lt);text-transform:uppercase;letter-spacing:1px}
+.card .cv{font-size:28px;font-weight:800;margin-top:4px}
+.card .cv span{font-size:14px;font-weight:600}
+.card .cs{font-size:12px;color:var(--mid);margin-top:4px}
+.card .ci{font-size:28px;margin-bottom:6px}
+.gauge{margin-bottom:16px}
+.gauge .gl{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px}
+.gauge .gn{font-weight:600;color:var(--mid)}
+.gauge .gv{font-weight:700;color:var(--g2)}
+.gauge .gb{height:12px;border-radius:6px;background:#eee;overflow:hidden;position:relative}
+.gauge .gf{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,var(--ok),var(--lime),var(--warn),var(--danger));transition:width 1s}
+.gauge .gz{position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:0.7}
+.mbar{margin-bottom:16px}
+.mbar .mb{display:flex;height:18px;border-radius:9px;overflow:hidden;margin-bottom:8px}
+.mbar .mp{background:var(--g2);transition:width 0.6s}
+.mbar .mc{background:var(--gold);transition:width 0.6s}
+.mbar .mf{background:var(--coral);transition:width 0.6s}
+.mbar .ml{display:flex;justify-content:space-around;font-size:11px}
+.mbar .dot{display:inline-block;width:8px;height:8px;border-radius:4px;margin-right:4px}
+.nbox{background:#fff;border-radius:18px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.wbox{background:#E3F2FD;border-radius:18px;padding:18px;margin:16px 0;text-align:center}
+.wbox .wv{font-size:24px;font-weight:800;color:var(--info)}
+.dbox{background:linear-gradient(135deg,rgba(76,184,72,0.06),rgba(141,198,63,0.04));border-radius:18px;padding:18px;text-align:center;margin-bottom:16px;border:1px solid rgba(76,184,72,0.12)}
+.sum{background:#fff;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.sum .sr{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #f0f0f0}
+.sum .sr:last-child{border-bottom:none}
+.sum .sk{color:var(--mid);font-weight:500}
+.sum .sv{color:var(--dk);font-weight:700;text-align:right}
+.disc{font-size:10px;color:var(--lt);text-align:center;padding:12px 16px;line-height:1.5;background:#f9f9f9;border-radius:12px;margin-bottom:20px}
+.save-status{margin-bottom:12px;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:600;text-align:center}
+.rhdr{text-align:center;margin-bottom:24px;padding:20px 16px;background:linear-gradient(135deg,rgba(76,184,72,0.08),rgba(141,198,63,0.05));border-radius:20px}
+.macro-box{text-align:center;padding:10px;border-radius:12px}
+.macro-box .mv{font-size:20px;font-weight:800}
+.macro-box .mn{font-size:10px;color:var(--mid)}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <div class="top">🌿 Valoración Corporal</div>
+  <div class="bar" id="bar"></div>
+  <div id="content"></div>
+</div>
+
+<script>
+var SHEET="https://script.google.com/macros/s/AKfycbw-OaiRThQQYYthWatEBKJvNIFKUlA2neUWLCdSvW0f-MQd_wNxfF6rwzSlm-9XE_SB/exec";
+var GN={lose:"Bajar de peso",maintain:"Mantener peso",gain:"Subir de peso"};
+var AN={"1.2":"Sedentaria","1.375":"Ligera","1.55":"Moderada","1.725":"Alta"};
+var D={},R=null,step=0;
+
+function $(id){return document.getElementById(id)}
+function q(s){return document.querySelectorAll(s)}
+
+function bar(){
+  var h='';for(var i=0;i<4;i++)h+='<div class="'+(i<=step?'on':'')+'"></div>';
+  $('bar').innerHTML=h;
+  $('bar').style.display=step<4?'flex':'none';
+}
+
+function val(id){var e=$(id);return e?e.value.trim():'';}
+
+function render(){
+  bar();
+  var c=$('content');
+  c.classList.add('hide');
+  setTimeout(function(){
+    if(step===0)step0();
+    else if(step===1)step1();
+    else if(step===2)step2();
+    else if(step===3)step3();
+    else if(step===4)step4();
+    c.classList.remove('hide');
+    window.scrollTo({top:0,behavior:'smooth'});
+  },250);
+}
+
+function save(){
+  if($('name'))D.name=val('name');
+  if($('wa'))D.wa=val('wa');
+  if($('city'))D.city=val('city');
+  if($('country'))D.country=val('country');
+  if($('dist'))D.dist=val('dist');
+  if($('age'))D.age=val('age');
+  if($('weight'))D.weight=val('weight');
+  if($('height'))D.height=val('height');
+  if($('waist'))D.waist=val('waist');
+  if($('neck'))D.neck=val('neck');
+  if($('hip'))D.hip=val('hip');
+}
+
+function next(){save();step++;render();}
+function back(){save();step--;render();}
+
+function selGender(g){D.gender=g;q('.opt-g').forEach(function(e){e.classList.toggle('sel',e.dataset.v===g)});}
+function selAct(a){D.activity=a;q('.opt-a').forEach(function(e){e.classList.toggle('sel',e.dataset.v===a)});}
+function selGoal(g){D.goal=g;q('.opt-go').forEach(function(e){e.classList.toggle('sel',e.dataset.v===g)});}
+
+function chk0(){var ok=val('name')&&val('wa')&&D.gender;$('btn0').disabled=!ok;}
+function chk1(){var ok=val('age')&&val('weight')&&val('height');$('btn1').disabled=!ok;}
+function chk2(){var ok=val('waist')&&val('neck')&&(D.gender==='female'?val('hip'):true);$('btn2').disabled=!ok;}
+function chk3(){var ok=D.activity&&D.goal;$('btn3').disabled=!ok;}
+
+function step0(){
+  $('content').innerHTML=
+  '<div class="icon-big">🌸</div>'+
+  '<h2>¡Bienvenida a tu Valoración!</h2>'+
+  '<p class="sub">Este es el primer paso hacia tu mejor versión. Completa tus datos y descubre cómo está tu cuerpo hoy.</p>'+
+  '<div style="height:24px"></div>'+
+
+  '<label class="field">👤 Tu nombre completo</label>'+
+  '<div class="input-wrap"><input id="name" placeholder="Ej: María García" value="'+(D.name||'')+'" oninput="chk0()"></div>'+
+
+  '<label class="field">📱 Tu WhatsApp</label>'+
+  '<div class="input-wrap"><input id="wa" type="tel" placeholder="Ej: +57 300 123 4567" value="'+(D.wa||'')+'" oninput="chk0()"></div>'+
+
+  '<div class="grid2">'+
+    '<div><label class="field">🏙️ Ciudad</label><div class="input-wrap"><input id="city" placeholder="Ej: Bogotá" value="'+(D.city||'')+'"></div></div>'+
+    '<div><label class="field">🌎 País</label><div class="input-wrap"><input id="country" placeholder="Ej: Colombia" value="'+(D.country||'')+'"></div></div>'+
+  '</div>'+
+
+  '<label class="field">👩 Sexo biológico</label>'+
+  '<div class="opts c2">'+
+    '<div class="opt opt-g '+(D.gender==='female'?'sel':'')+'" data-v="female" onclick="selGender(\'female\');chk0()"><div class="ol">👩 Mujer</div></div>'+
+    '<div class="opt opt-g '+(D.gender==='male'?'sel':'')+'" data-v="male" onclick="selGender(\'male\');chk0()"><div class="ol">👨 Hombre</div></div>'+
+  '</div>'+
+
+  '<label class="field">💚 Nombre de quien te invitó a esta valoración</label>'+
+  '<div class="input-wrap"><input id="dist" placeholder="Ej: Ana López" value="'+(D.dist||'')+'"></div>'+
+
+  '<button class="btn pri" id="btn0" disabled onclick="next()">Continuar →</button>';
+  chk0();
+}
+
+function step1(){
+  var fn=(D.name||'').split(' ')[0];
+  $('content').innerHTML=
+  '<div class="icon-big">📏</div>'+
+  '<h2 style="font-size:20px">Tus datos básicos</h2>'+
+  '<p class="sub2">'+fn+', necesitamos estos datos para calcular tu composición corporal.</p>'+
+  '<div style="height:24px"></div>'+
+
+  '<label class="field">🎂 Edad</label>'+
+  '<div class="input-wrap"><input id="age" type="number" placeholder="Ej: 35" class="has-suf" value="'+(D.age||'')+'" oninput="chk1()" min="15" max="90"><span class="suf">años</span></div>'+
+
+  '<label class="field">⚖️ Peso actual</label>'+
+  '<div class="input-wrap"><input id="weight" type="number" placeholder="Ej: 68" class="has-suf" value="'+(D.weight||'')+'" oninput="chk1()" min="30" max="250"><span class="suf">kg</span></div>'+
+
+  '<label class="field">📐 Estatura</label>'+
+  '<div class="input-wrap"><input id="height" type="number" placeholder="Ej: 165" class="has-suf" value="'+(D.height||'')+'" oninput="chk1()" min="120" max="220"><span class="suf">cm</span></div>'+
+
+  '<div class="btns">'+
+    '<button class="btn sec" style="flex:1" onclick="back()">← Atrás</button>'+
+    '<button class="btn pri" style="flex:2" id="btn1" disabled onclick="next()">Continuar →</button>'+
+  '</div>';
+  chk1();
+}
+
+function step2(){
+  var hipHtml=D.gender==='female'?
+    '<label class="field">📍 Cadera</label>'+
+    '<div class="input-wrap"><input id="hip" type="number" placeholder="Ej: 98" class="has-suf" value="'+(D.hip||'')+'" oninput="chk2()" min="50" max="180"><span class="suf">cm</span></div>':'<input id="hip" type="hidden" value="">';
+
+  var cadInfo=D.gender==='female'?'<br><strong>Cadera:</strong> en la parte más ancha de tus glúteos.':'';
+
+  $('content').innerHTML=
+  '<div class="icon-big">📐</div>'+
+  '<h2 style="font-size:20px">Tus medidas corporales</h2>'+
+  '<p class="sub2">Usa una cinta métrica flexible. Mide sobre la piel, sin apretar.</p>'+
+  '<div style="height:16px"></div>'+
+
+  '<div class="alert inf"><div class="at">💡 ¿Cómo medir correctamente?</div><div class="ab">'+
+    '<strong>Cintura:</strong> a la altura del ombligo, relajada.<br>'+
+    '<strong>Cuello:</strong> justo debajo de la nuez de Adán.'+cadInfo+
+  '</div></div>'+
+
+  '<label class="field">📍 Cintura</label>'+
+  '<div class="input-wrap"><input id="waist" type="number" placeholder="Ej: 80" class="has-suf" value="'+(D.waist||'')+'" oninput="chk2()" min="40" max="180"><span class="suf">cm</span></div>'+
+
+  '<label class="field">📍 Cuello</label>'+
+  '<div class="input-wrap"><input id="neck" type="number" placeholder="Ej: 34" class="has-suf" value="'+(D.neck||'')+'" oninput="chk2()" min="20" max="60"><span class="suf">cm</span></div>'+
+
+  hipHtml+
+
+  '<div class="btns">'+
+    '<button class="btn sec" style="flex:1" onclick="back()">← Atrás</button>'+
+    '<button class="btn pri" style="flex:2" id="btn2" disabled onclick="next()">Continuar →</button>'+
+  '</div>';
+  chk2();
+}
+
+function step3(){
+  var fn=(D.name||'').split(' ')[0];
+  $('content').innerHTML=
+  '<div class="icon-big">🎯</div>'+
+  '<h2 style="font-size:20px">Tu estilo de vida y meta</h2>'+
+  '<p class="sub2">'+fn+', cuéntanos sobre tu actividad y lo que quieres lograr.</p>'+
+  '<div style="height:16px"></div>'+
+
+  '<label class="field">🏃‍♀️ Nivel de actividad física</label>'+
+  '<div class="opts c2">'+
+    '<div class="opt opt-a '+(D.activity==='1.2'?'sel':'')+'" data-v="1.2" onclick="selAct(\'1.2\');chk3()"><div class="ol">Sedentaria</div><div class="od">Poco o nada de ejercicio</div></div>'+
+    '<div class="opt opt-a '+(D.activity==='1.375'?'sel':'')+'" data-v="1.375" onclick="selAct(\'1.375\');chk3()"><div class="ol">Ligera</div><div class="od">Ejercicio 1-3 días/semana</div></div>'+
+    '<div class="opt opt-a '+(D.activity==='1.55'?'sel':'')+'" data-v="1.55" onclick="selAct(\'1.55\');chk3()"><div class="ol">Moderada</div><div class="od">Ejercicio 3-5 días/semana</div></div>'+
+    '<div class="opt opt-a '+(D.activity==='1.725'?'sel':'')+'" data-v="1.725" onclick="selAct(\'1.725\');chk3()"><div class="ol">Alta</div><div class="od">Ejercicio 6-7 días/semana</div></div>'+
+  '</div>'+
+
+  '<label class="field" style="margin-top:8px">🌟 ¿Cuál es tu meta?</label>'+
+  '<div class="opts">'+
+    '<div class="opt opt-go '+(D.goal==='lose'?'sel':'')+'" data-v="lose" onclick="selGoal(\'lose\');chk3()"><div class="ol">🌿 Bajar de peso</div><div class="od">Quiero perder grasa de forma saludable</div></div>'+
+    '<div class="opt opt-go '+(D.goal==='maintain'?'sel':'')+'" data-v="maintain" onclick="selGoal(\'maintain\');chk3()"><div class="ol">⚖️ Mantener peso</div><div class="od">Estoy bien, quiero mantenerme</div></div>'+
+    '<div class="opt opt-go '+(D.goal==='gain'?'sel':'')+'" data-v="gain" onclick="selGoal(\'gain\');chk3()"><div class="ol">💪 Subir de peso</div><div class="od">Quiero ganar masa muscular</div></div>'+
+  '</div>'+
+
+  '<div class="btns">'+
+    '<button class="btn sec" style="flex:1" onclick="back()">← Atrás</button>'+
+    '<button class="btn pri" style="flex:2" id="btn3" disabled onclick="calculate()">✨ Ver mis resultados</button>'+
+  '</div>';
+  chk3();
+}
+
+function calculate(){
+  save();
+  var w=parseFloat(D.weight),h=parseFloat(D.height),a=parseFloat(D.age);
+  var wa=parseFloat(D.waist),ne=parseFloat(D.neck),hi=parseFloat(D.hip)||0;
+  var act=parseFloat(D.activity),g=D.gender;
+
+  var bf;
+  if(g==='female')bf=163.205*Math.log10(wa+hi-ne)-97.684*Math.log10(h)-78.387;
+  else bf=86.010*Math.log10(wa-ne)-70.041*Math.log10(h)+36.76;
+  bf=Math.max(3,Math.min(bf,55));
+
+  var bc;
+  if(g==='male'){
+    if(bf<6)bc={l:"Muy bajo",c:"var(--warn)",r:true,m:"Tu porcentaje de grasa es muy bajo. Esto puede afectar tu energía, sistema inmune y niveles hormonales. Consulta con un profesional de salud."};
+    else if(bf<=13)bc={l:"Atlético",c:"var(--ok)",r:false,m:""};
+    else if(bf<=17)bc={l:"Fitness",c:"var(--ok)",r:false,m:""};
+    else if(bf<=24)bc={l:"Promedio",c:"var(--warn)",r:false,m:"Estás en un rango promedio. Con algunos ajustes en alimentación y actividad física, puedes mejorar tu composición corporal."};
+    else bc={l:"Alto",c:"var(--danger)",r:true,m:"Un porcentaje de grasa elevado puede aumentar el riesgo de enfermedades cardiovasculares, diabetes tipo 2 e hipertensión. Te recomendamos un plan de alimentación saludable y actividad física regular."};
+  }else{
+    if(bf<16)bc={l:"Muy bajo",c:"var(--warn)",r:true,m:"Tu porcentaje de grasa es muy bajo. Esto puede afectar tu ciclo menstrual, densidad ósea y equilibrio hormonal. Consulta con un profesional de salud."};
+    else if(bf<=23)bc={l:"Fitness",c:"var(--ok)",r:false,m:""};
+    else if(bf<=30)bc={l:"Promedio",c:"var(--warn)",r:false,m:"Estás en un rango promedio. Con algunos ajustes en alimentación y actividad física, puedes sentirte mejor y más saludable."};
+    else bc={l:"Alto",c:"var(--danger)",r:true,m:"Un porcentaje de grasa elevado puede aumentar el riesgo de enfermedades cardiovasculares, diabetes tipo 2, problemas articulares y desequilibrios hormonales. Te recomendamos un plan de alimentación saludable con acompañamiento profesional."};
+  }
+
+  var fm=w*(bf/100),lm=w-fm;
+  var bmi=w/Math.pow(h/100,2);
+  var bmc;
+  if(bmi<18.5)bmc={l:"Bajo peso",c:"var(--warn)"};
+  else if(bmi<25)bmc={l:"Normal",c:"var(--ok)"};
+  else if(bmi<30)bmc={l:"Sobrepeso",c:"var(--warn)"};
+  else bmc={l:"Obesidad",c:"var(--danger)"};
+
+  var tmb;
+  if(g==='female')tmb=10*w+6.25*h-5*a-161;
+  else tmb=10*w+6.25*h-5*a+5;
+  var tdee=tmb*act;
+  var def=D.goal==='lose'?-450:D.goal==='gain'?350:0;
+  var tc=tdee+def;
+  var pg=w*2,fg=w*0.9;
+  var pc=pg*4,fc=fg*9;
+  var cc=Math.max(0,tc-pc-fc),cg=cc/4;
+  var wn=(w*35/1000).toFixed(1),wx=(w*45/1000).toFixed(1);
+
+  // Grasa visceral estimada (escala 1-59, basada en correlación cintura/edad/sexo/IMC)
+  var gv;
+  if(g==='male') gv=(0.37*wa)+(0.15*a)+(0.13*bmi)-19.2;
+  else gv=(0.29*wa)+(0.12*a)+(0.10*bmi)-18.1;
+  gv=Math.max(1,Math.min(Math.round(gv),30));
+  var gvc;
+  if(gv<=9)gvc={l:"Normal",c:"var(--ok)",m:"Tu nivel de grasa visceral está en un rango saludable. ¡Excelente! Sigue con tus buenos hábitos."};
+  else if(gv<=14)gvc={l:"Alto",c:"var(--warn)",m:"Tu grasa visceral está por encima de lo ideal. Esto puede aumentar el riesgo de resistencia a la insulina y problemas metabólicos. Reducir carbohidratos refinados y aumentar actividad física puede ayudarte."};
+  else gvc={l:"Muy alto",c:"var(--danger)",m:"Tu nivel de grasa visceral es elevado. Esto está asociado con mayor riesgo de diabetes tipo 2, enfermedades cardiovasculares e hígado graso. Es importante buscar acompañamiento profesional para un plan de alimentación y ejercicio."};
+
+  R={bf:bf,bc:bc,fm:fm,lm:lm,bmi:bmi,bmc:bmc,tc:tc,def:def,pg:pg,fg:fg,cg:cg,pc:pc,fc:fc,cc:cc,wn:wn,wx:wx,gv:gv,gvc:gvc};
+
+  // Send to Google Sheets
+  try{
+    fetch(SHEET,{
+      method:"POST",headers:{"Content-Type":"text/plain"},
+      body:JSON.stringify({
+        nombre:D.name,whatsapp:D.wa,ciudad:D.city,pais:D.country,
+        sexo:g==='female'?'Mujer':'Hombre',distribuidor:D.dist,
+        edad:D.age,peso:D.weight,estatura:D.height,cintura:D.waist,
+        cuello:D.neck,cadera:D.hip||'N/A',actividad:AN[D.activity]||'',
+        meta:GN[D.goal]||'',porcGrasa:bf.toFixed(1),imc:bmi.toFixed(1),
+        catGrasa:bc.l,masaGrasa:fm.toFixed(1),masaMagra:lm.toFixed(1),
+        calorias:Math.round(tc),proteina:Math.round(pg),
+        carbohidratos:Math.round(cg),grasas:Math.round(fg),
+        aguaMin:wn,aguaMax:wx,
+        grasaVisceral:gv,catVisceral:gvc.l
+      })
+    }).then(function(r){return r.json()}).then(function(d){
+      var el=document.getElementById('save-st');
+      if(el){
+        if(d.status==='ok'){el.textContent='✅ Datos guardados exitosamente';el.style.background='#E8F8E8';el.style.color='#27AE60';}
+        else{el.textContent='❌ Error al guardar';el.style.background='#FFEBEE';el.style.color='#E74C3C';}
+      }
+    }).catch(function(){
+      var el=document.getElementById('save-st');
+      if(el){el.textContent='❌ Error de conexión';el.style.background='#FFEBEE';el.style.color='#E74C3C';}
+    });
+  }catch(e){}
+
+  step=4;render();
+}
+
+function step4(){
+  if(!R)return;
+  var r=R,fn=(D.name||'').split(' ')[0],g=D.gender;
+  var fecha=new Date().toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'});
+  var pct=Math.min(100,Math.max(0,((r.bf-5)/((g==='female'?50:40)-5))*100));
+  var zones=g==='female'?[16,23,30]:[6,13,17,24];
+  var zHtml='';zones.forEach(function(z){var p=((z-5)/((g==='female'?50:40)-5))*100;zHtml+='<div class="gz" style="left:'+p+'%"></div>';});
+
+  var t=r.pc+r.cc+r.fc;
+  var pp=t?(r.pc/t*100):33,cp=t?(r.cc/t*100):33,fp=t?(r.fc/t*100):34;
+
+  // Health alert
+  var alertHtml='';
+  if(r.bc.r){
+    var atype=r.bf<(g==='female'?16:6)?'wrn':'dng';
+    alertHtml='<div class="alert '+atype+'"><div class="at">'+(atype==='wrn'?'⚠️':'🚨')+' Atención sobre tu salud</div><div class="ab">'+r.bc.m+'</div></div>';
+  }else if(r.bc.l==='Promedio'){
+    alertHtml='<div class="alert wrn"><div class="at">⚠️ Puedes mejorar</div><div class="ab">'+r.bc.m+'</div></div>';
+  }else{
+    alertHtml='<div class="alert suc"><div class="at">🎉 ¡Felicitaciones, '+fn+'!</div><div class="ab">Tu composición corporal está en un rango saludable. ¡Sigue así! Mantener buenos hábitos de alimentación y actividad física te ayudará a conservar estos resultados.</div></div>';
+  }
+
+  if(r.bmc.l==='Obesidad'){
+    alertHtml+='<div class="alert dng"><div class="at">🚨 IMC elevado</div><div class="ab">Tu IMC de '+r.bmi.toFixed(1)+' indica obesidad. Esto puede estar asociado a mayor riesgo cardiovascular, resistencia a la insulina y problemas articulares. Un plan de alimentación estructurado puede hacer una gran diferencia.</div></div>';
+  }
+
+  // Tips
+  var tips='';
+  if(D.goal==='lose')tips='<div class="alert inf"><div class="at">💡 Para bajar de peso saludablemente</div><div class="ab">Prioriza la proteína en cada comida para proteger tu masa muscular. Come verduras en abundancia. Reduce azúcares y harinas refinadas. Camina al menos 8,000 pasos diarios. Duerme 7-8 horas.</div></div>';
+  if(D.goal==='gain')tips='<div class="alert inf"><div class="at">💡 Para ganar masa muscular</div><div class="ab">Come suficiente proteína distribuida en 4-5 comidas. Incluye entrenamientos de fuerza 3-4 veces por semana. No temas a los carbohidratos. Descansa adecuadamente entre sesiones.</div></div>';
+  if(D.goal==='maintain')tips='<div class="alert inf"><div class="at">💡 Para mantener tu peso saludable</div><div class="ab">Mantén una alimentación balanceada y variada. Sigue activa con cardio y fuerza. Monitorea tu peso cada 2-4 semanas. Escucha a tu cuerpo.</div></div>';
+
+  // Distributor
+  var distHtml='';
+  if(D.dist){
+    distHtml='<div class="dbox"><div style="font-size:12px;color:var(--mid)">Tu asesor/a de bienestar</div><div style="font-size:16px;font-weight:700;color:var(--g3);margin-top:4px">💚 '+D.dist+'</div><div style="font-size:12px;color:var(--mid);margin-top:6px">Contacta a '+D.dist.split(' ')[0]+' para un plan personalizado.</div></div>';
+  }
+
+  // Deficit badge
+  var defBadge='';
+  if(r.def!==0){
+    defBadge='<div style="display:inline-block;margin-top:8px;padding:4px 12px;border-radius:20px;background:'+(r.def<0?'#FFF3E6':'#E8F8E8')+';font-size:12px;font-weight:600;color:'+(r.def<0?'var(--gold)':'var(--ok)')+'">'+
+      (r.def<0?'Déficit':'Superávit')+' de '+Math.abs(r.def)+' kcal</div>';
+  }
+
+  $('content').innerHTML=
+  '<div class="save-status" id="save-st" style="background:#FFF8E1;color:var(--warn)">⏳ Guardando tus datos...</div>'+
+
+  '<div class="rhdr"><div style="font-size:40px;margin-bottom:4px">'+(r.bc.r?'💪':'🎉')+'</div>'+
+  '<h2 style="font-size:20px">'+fn+', aquí están tus resultados</h2>'+
+  '<p style="font-size:12px;color:var(--mid);margin-top:6px">Valoración del '+fecha+'</p></div>'+
+
+  '<h3>🧬 Composición Corporal</h3>'+
+  '<div class="grid2" style="margin-bottom:12px">'+
+    '<div class="card"><div class="ci">🔥</div><div class="ct">% Grasa</div><div class="cv" style="color:'+r.bc.c+'">'+r.bf.toFixed(1)+'<span>%</span></div><div class="cs">'+r.bc.l+'</div></div>'+
+    '<div class="card"><div class="ci">📊</div><div class="ct">IMC</div><div class="cv" style="color:'+r.bmc.c+'">'+r.bmi.toFixed(1)+'</div><div class="cs">'+r.bmc.l+'</div></div>'+
+  '</div>'+
+  '<div class="grid2" style="margin-bottom:16px">'+
+    '<div class="card"><div class="ci">🟠</div><div class="ct">Masa Grasa</div><div class="cv" style="color:var(--coral)">'+r.fm.toFixed(1)+'<span> kg</span></div></div>'+
+    '<div class="card"><div class="ci">🟢</div><div class="ct">Masa Magra</div><div class="cv" style="color:var(--g2)">'+r.lm.toFixed(1)+'<span> kg</span></div></div>'+
+  '</div>'+
+
+  '<div class="card" style="margin-bottom:16px"><div class="ci">🫀</div><div class="ct">Grasa Visceral</div><div class="cv" style="color:'+r.gvc.c+'">'+r.gv+'<span> / 30</span></div><div class="cs">'+r.gvc.l+'</div></div>'+
+
+  '<div class="gauge"><div class="gl"><span class="gn">Porcentaje de grasa corporal</span><span class="gv">'+r.bf.toFixed(1)+'%</span></div>'+
+  '<div class="gb"><div class="gf" style="width:'+pct+'%"></div>'+zHtml+'</div></div>'+
+
+  (function(){
+    var gvPct=Math.min(100,Math.max(0,(r.gv/30)*100));
+    var gvZ1=((9/30)*100),gvZ2=((14/30)*100);
+    return '<div class="gauge"><div class="gl"><span class="gn">Nivel de grasa visceral</span><span class="gv">'+r.gv+' / 30</span></div>'+
+    '<div class="gb"><div class="gf" style="width:'+gvPct+'%"></div>'+
+    '<div class="gz" style="left:'+gvZ1+'%"></div><div class="gz" style="left:'+gvZ2+'%"></div>'+
+    '</div></div>';
+  })()+
+
+  alertHtml+
+
+  (r.gv>9?'<div class="alert '+(r.gv>14?'dng':'wrn')+'"><div class="at">'+(r.gv>14?'🚨':'⚠️')+' Grasa visceral '+(r.gv>14?'muy alta':'elevada')+'</div><div class="ab">'+r.gvc.m+'</div></div>':'')+
+
+  '<h3 style="margin-top:20px">🥗 Tu Plan Nutricional</h3>'+
+  '<div class="nbox"><div style="text-align:center;margin-bottom:16px">'+
+    '<div style="font-size:11px;font-weight:600;color:var(--lt);text-transform:uppercase;letter-spacing:1px">Meta: '+GN[D.goal]+'</div>'+
+    '<div style="font-size:36px;font-weight:800;color:var(--g2);margin-top:4px">'+Math.round(r.tc)+'</div>'+
+    '<div style="font-size:13px;color:var(--mid)">calorías diarias</div>'+
+    defBadge+
+  '</div>'+
+
+  '<div class="mbar"><div class="mb"><div class="mp" style="width:'+pp+'%"></div><div class="mc" style="width:'+cp+'%"></div><div class="mf" style="width:'+fp+'%"></div></div>'+
+  '<div class="ml"><span><span class="dot" style="background:var(--g2)"></span>Proteína '+pp.toFixed(0)+'%</span><span><span class="dot" style="background:var(--gold)"></span>Carbos '+cp.toFixed(0)+'%</span><span><span class="dot" style="background:var(--coral)"></span>Grasas '+fp.toFixed(0)+'%</span></div></div>'+
+
+  '<div class="grid3" style="margin-top:12px">'+
+    '<div class="macro-box" style="background:rgba(45,140,60,0.06)"><div class="mv" style="color:var(--g2)">'+Math.round(r.pg)+'g</div><div class="mn">Proteína</div></div>'+
+    '<div class="macro-box" style="background:rgba(245,166,35,0.06)"><div class="mv" style="color:var(--gold)">'+Math.round(r.cg)+'g</div><div class="mn">Carbohidratos</div></div>'+
+    '<div class="macro-box" style="background:rgba(255,107,107,0.06)"><div class="mv" style="color:var(--coral)">'+Math.round(r.fg)+'g</div><div class="mn">Grasas</div></div>'+
+  '</div></div>'+
+
+  '<div class="wbox"><div style="font-size:28px">💧</div><div style="font-size:13px;font-weight:700;color:var(--info);margin-top:4px">Agua recomendada</div><div class="wv">'+r.wn+' – '+r.wx+' litros/día</div></div>'+
+
+  '<h3>💎 Recomendaciones para ti</h3>'+tips+distHtml+
+
+  '<div class="sum"><h3 style="text-align:center;font-size:14px">📋 Resumen</h3>'+
+  sr('Nombre',D.name)+sr('Edad',D.age+' años')+sr('Peso',D.weight+' kg')+sr('Estatura',D.height+' cm')+
+  sr('% Grasa',r.bf.toFixed(1)+'% ('+r.bc.l+')')+sr('IMC',r.bmi.toFixed(1)+' ('+r.bmc.l+')')+
+  sr('Masa grasa',r.fm.toFixed(1)+' kg')+sr('Masa magra',r.lm.toFixed(1)+' kg')+
+  sr('Grasa visceral',r.gv+' ('+r.gvc.l+')')+
+  sr('Calorías',Math.round(r.tc)+' kcal')+sr('Proteína',Math.round(r.pg)+' g/día')+
+  sr('Carbohidratos',Math.round(r.cg)+' g/día')+sr('Grasas',Math.round(r.fg)+' g/día')+
+  sr('Agua',r.wn+' – '+r.wx+' L/día')+sr('Meta',GN[D.goal])+
+  '</div>'+
+
+  '<div class="disc">⚠️ Esta valoración es una estimación basada en fórmulas reconocidas (U.S. Navy, Mifflin-St Jeor). No reemplaza una consulta médica o nutricional profesional.</div>'+
+
+  '<button class="btn pri" onclick="restart()">🔄 Nueva valoración</button>';
+}
+
+function sr(k,v){return '<div class="sr"><span class="sk">'+k+'</span><span class="sv">'+v+'</span></div>';}
+
+function restart(){D={};R=null;step=0;render();}
+
+render();
+</script>
+</body>
+</html>
